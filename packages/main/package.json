@@ -1,0 +1,47 @@
+{
+	"name": "@produck/is-sub-constructor",
+	"version": "1.0.0",
+	"description": "Use a modern way to check if a constructor is a sub-constructor (derived class) of another.",
+	"license": "MIT",
+	"author": "ChaosLee",
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/produck/is-sub-constructor.git"
+	},
+	"bugs": {
+		"url": "https://github.com/produck/is-sub-constructor/issues"
+	},
+	"homepage": "https://github.com/produck/is-sub-constructor#readme",
+	"keywords": [
+		"constructor",
+		"sub-constructor",
+		"derived",
+		"extends",
+		"class",
+		"prototype",
+		"inheritance",
+		"is",
+		"check",
+		"util"
+	],
+	"type": "module",
+	"main": "src/index.mjs",
+	"types": "index.d.ts",
+	"exports": {
+		".": {
+			"types": "./index.d.ts",
+			"import": "./src/index.mjs"
+		}
+	},
+	"files": [
+		"src",
+		"index.d.ts"
+	],
+	"scripts": {
+		"test": "node ./test/index.mjs",
+		"test:only": "node --test-only ./test/index.mjs"
+	}
+}
