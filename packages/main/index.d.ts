@@ -3,5 +3,9 @@
  * @param value - The value to check
  * @param base - The base constructor to check against
  * @returns True if value is a sub-constructor of base, false otherwise
+ * @throws {TypeError} If base is not a constructor
  */
-export function isSubConstructor(value: unknown, base: unknown): boolean;
+export function isSubConstructor(
+	value: unknown,
+	base: new (...args: unknown[]) => unknown,
+): boolean;
