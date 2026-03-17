@@ -1,6 +1,6 @@
 {
 	"name": "@produck/is-sub-constructor",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Use a modern way to check if a constructor is a sub-constructor (derived class) of another.",
 	"license": "MIT",
 	"author": "ChaosLee",
