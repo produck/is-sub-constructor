@@ -46,6 +46,6 @@
 	},
 	"dependencies": {
 		"@produck/is-constructor": "^1.0.1",
-		"@produck/type-error": "^0.1.4"
+		"@produck/type-error": "^0.1.5"
 	}
 }
