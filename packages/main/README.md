@@ -11,7 +11,7 @@ npm install @produck/is-sub-constructor
 ## Usage
 
 ```js
-import { isSubConstructor } from "@produck/is-sub-constructor";
+import { isSubConstructor } from '@produck/is-sub-constructor';
 
 class Animal {}
 class Dog extends Animal {}

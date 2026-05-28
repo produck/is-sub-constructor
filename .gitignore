@@ -69,6 +69,30 @@ web_modules/
 # Output of 'npm pack'
 *.tgz
 
+# Build output
+dist/
+build/
+out/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS/Editor files
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
+
+# Temporary files
+tmp/
+temp/
+
+# Generated artifacts
+*.gen
+*.ign
+
 # Yarn Integrity file
 .yarn-integrity
 
@@ -132,4 +156,6 @@ dist
 .vscode
 *.ign*
 
-.github
+# produck:org-baseline
+*.gen*
+publish-assets/

@@ -6,6 +6,6 @@
  * @throws {TypeError} If base is not a constructor
  */
 export function isSubConstructor(
-	value: unknown,
-	base: new (...args: unknown[]) => unknown,
+  value: unknown,
+  base: new (...args: unknown[]) => unknown,
 ): boolean;
