@@ -159,3 +159,6 @@ dist
 # produck:org-baseline
 *.gen*
 publish-assets/
+
+# produck:org-baseline
+!.github/
