@@ -4,13 +4,10 @@
     "url": "https://github.com/produck/is-sub-constructor/issues"
   },
   "dependencies": {
-    "@produck/is-constructor": "^1.0.1",
-    "@produck/type-error": "^0.1.5"
+    "@produck/is-constructor": "^1.0.2",
+    "@produck/type-error": "^0.1.8"
   },
   "description": "Use a modern way to check if a constructor is a sub-constructor (derived class) of another.",
-  "devDependencies": {
-    "c8": "11.0.0"
-  },
   "exports": {
     ".": {
       "import": "./src/index.mjs",
