@@ -3,20 +3,19 @@
   "bugs": {
     "url": "https://github.com/produck/is-sub-constructor/issues"
   },
-  "dependencies": {
-    "@produck/is-constructor": "^1.0.2",
-    "@produck/type-error": "^0.1.8"
-  },
   "description": "Use a modern way to check if a constructor is a sub-constructor (derived class) of another.",
+  "devDependencies": {
+    "@produck/is-constructor": "^2.0.0",
+    "@produck/type-error": "^0.1.0"
+  },
   "exports": {
     ".": {
       "import": "./src/index.mjs",
-      "types": "./index.d.ts"
+      "types": "./src/index.d.mts"
     }
   },
   "files": [
-    "src",
-    "index.d.ts"
+    "src"
   ],
   "homepage": "https://github.com/produck/is-sub-constructor/tree/main/packages/main#readme",
   "keywords": [
@@ -34,6 +33,10 @@
   "license": "MIT",
   "main": "src/index.mjs",
   "name": "@produck/is-sub-constructor",
+  "peerDependencies": {
+    "@produck/is-constructor": "^2.0.0",
+    "@produck/type-error": "^0.1.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -47,7 +50,8 @@
     "test": "node ./test/index.mjs",
     "test:only": "node --test-only ./test/index.mjs"
   },
+  "sideEffects": false,
   "type": "module",
-  "types": "index.d.ts",
+  "types": "./src/index.d.mts",
   "version": "1.0.4"
 }

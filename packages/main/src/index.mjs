@@ -1,14 +1,22 @@
 import { ThrowTypeError } from '@produck/type-error';
-import { isConstructor } from '@produck/is-constructor';
 
-export function isSubConstructor(value, base) {
-  if (!isConstructor(base)) {
-    ThrowTypeError('args[1] as base', 'constructor');
-  }
+import { isClassLike, isConstructor } from '@produck/is-constructor';
 
-  if (!isConstructor(value)) {
-    return false;
-  }
+const { isPrototypeOf } = Object.prototype;
 
-  return value.prototype instanceof base;
+function isSub(checker) {
+  return (value, base) => {
+    if (!checker(base)) {
+      ThrowTypeError('args[1] as base', 'constructor');
+    }
+
+    if (!checker(value)) {
+      return false;
+    }
+
+    return isPrototypeOf.call(base.prototype, value.prototype);
+  };
 }
+
+export const isSubClass = isSub(isClassLike);
+export const isSubConstructor = isSub(isConstructor);

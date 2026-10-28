@@ -1,94 +1,120 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { isSubConstructor } from '../src/index.mjs';
+import { isSubClass, isSubConstructor } from '../src/index.mjs';
 
-describe('isSubConstructor', () => {
-  class Base {}
-  class Child extends Base {}
-  class GrandChild extends Child {}
+const baseError = {
+  name: 'TypeError',
+  message: 'Invalid "args[1] as base", one "constructor" expected.',
+};
 
-  describe('should return true', () => {
-    it('when value is a direct sub-constructor of base', () => {
-      assert.equal(isSubConstructor(Child, Base), true);
+const implementations = [
+  ['isSubClass', isSubClass],
+  ['isSubConstructor', isSubConstructor],
+];
+
+class Base {}
+class Child extends Base {}
+class GrandChild extends Child {}
+
+for (const [name, isSub] of implementations) {
+  describe(`${name}()`, () => {
+    describe('should return true', () => {
+      it('when value is a direct sub-constructor of base', () => {
+        assert.equal(isSub(Child, Base), true);
+      });
+
+      it('when value is an indirect sub-constructor of base', () => {
+        assert.equal(isSub(GrandChild, Base), true);
+      });
+
+      it('when checking built-in inheritance', () => {
+        assert.equal(isSub(Array, Object), true);
+        assert.equal(isSub(Map, Object), true);
+        assert.equal(isSub(TypeError, Error), true);
+      });
     });
 
-    it('when value is an indirect sub-constructor of base', () => {
-      assert.equal(isSubConstructor(GrandChild, Base), true);
+    describe('should return false', () => {
+      it('when value and base are the same constructor', () => {
+        assert.equal(isSub(Base, Base), false);
+      });
+
+      it('when value is the base of the other', () => {
+        assert.equal(isSub(Base, Child), false);
+      });
+
+      it('when value and base are unrelated constructors', () => {
+        class Foo {}
+        class Bar {}
+
+        assert.equal(isSub(Foo, Bar), false);
+      });
+
+      it('when value is not a constructor', () => {
+        for (const value of [123, 'str', null, undefined, {}, true]) {
+          assert.equal(isSub(value, Base), false);
+        }
+      });
+
+      it('when value is an arrow function', () => {
+        const arrow = () => {};
+
+        assert.equal(isSub(arrow, Base), false);
+      });
     });
 
-    it('when checking built-in inheritance (Array extends Object)', () => {
-      assert.equal(isSubConstructor(Array, Object), true);
+    describe('should throw TypeError', () => {
+      it('when base is not a constructor', () => {
+        for (const base of [123, 'str', null, undefined, {}, true]) {
+          assert.throws(() => isSub(Child, base), baseError);
+        }
+      });
+
+      it('when base is an arrow function', () => {
+        const arrow = () => {};
+
+        assert.throws(() => isSub(Child, arrow), baseError);
+      });
+
+      it('when both arguments are non-constructors', () => {
+        assert.throws(() => isSub(null, null), baseError);
+        assert.throws(() => isSub(42, 'hello'), baseError);
+      });
+
+      it('when called with no arguments', () => {
+        assert.throws(() => isSub(), baseError);
+      });
     });
 
-    it('when checking built-in inheritance (Map extends Object)', () => {
-      assert.equal(isSubConstructor(Map, Object), true);
-    });
+    describe('>result', () => {
+      it('should follow the real prototype chain', () => {
+        class Custom {
+          static [Symbol.hasInstance]() {
+            return false;
+          }
+        }
 
-    it('when checking built-in inheritance (TypeError extends Error)', () => {
-      assert.equal(isSubConstructor(TypeError, Error), true);
+        class Derived extends Custom {}
+
+        assert.equal(isSub(Derived, Custom), true);
+      });
+
+      it('should ignore a custom Symbol.hasInstance', () => {
+        class AlwaysTrue {
+          static [Symbol.hasInstance]() {
+            return true;
+          }
+        }
+
+        class Throwing {
+          static [Symbol.hasInstance]() {
+            throw new Error('unexpected');
+          }
+        }
+
+        assert.equal(isSub(Base, AlwaysTrue), false);
+        assert.equal(isSub(Child, Throwing), false);
+      });
     });
   });
-
-  describe('should return false', () => {
-    it('when value and base are the same constructor', () => {
-      assert.equal(isSubConstructor(Base, Base), false);
-    });
-
-    it('when value is the base of the other', () => {
-      assert.equal(isSubConstructor(Base, Child), false);
-    });
-
-    it('when value and base are unrelated constructors', () => {
-      class Foo {}
-      class Bar {}
-
-      assert.equal(isSubConstructor(Foo, Bar), false);
-    });
-
-    it('when value is not a constructor', () => {
-      assert.equal(isSubConstructor(123, Base), false);
-      assert.equal(isSubConstructor('str', Base), false);
-      assert.equal(isSubConstructor(null, Base), false);
-      assert.equal(isSubConstructor(undefined, Base), false);
-      assert.equal(isSubConstructor({}, Base), false);
-      assert.equal(isSubConstructor(true, Base), false);
-    });
-
-    it('when value is an arrow function', () => {
-      const arrow = () => {};
-
-      assert.equal(isSubConstructor(arrow, Base), false);
-    });
-  });
-
-  describe('should throw TypeError', () => {
-    const expectedError = {
-      name: 'TypeError',
-      message: 'Invalid "args[1] as base", one "constructor" expected.',
-    };
-
-    it('when base is not a constructor', () => {
-      assert.throws(() => isSubConstructor(Child, 123), expectedError);
-      assert.throws(() => isSubConstructor(Child, 'str'), expectedError);
-      assert.throws(() => isSubConstructor(Child, null), expectedError);
-      assert.throws(() => isSubConstructor(Child, undefined), expectedError);
-      assert.throws(() => isSubConstructor(Child, {}), expectedError);
-      assert.throws(() => isSubConstructor(Child, true), expectedError);
-    });
-
-    it('when base is an arrow function', () => {
-      const arrow = () => {};
-
-      assert.throws(() => isSubConstructor(Child, arrow), expectedError);
-    });
-
-    it('when both arguments are non-constructors', () => {
-      assert.throws(() => isSubConstructor(null, null), expectedError);
-      assert.throws(() => isSubConstructor(42, 'hello'), expectedError);
-    });
-
-    it('when called with no arguments', () => {
-      assert.throws(() => isSubConstructor(), expectedError);
-    });
-  });
-});
+}
