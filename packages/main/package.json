@@ -53,5 +53,5 @@
   "sideEffects": false,
   "type": "module",
   "types": "./src/index.d.mts",
-  "version": "1.0.4"
+  "version": "2.0.0"
 }
