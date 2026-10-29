@@ -6,7 +6,7 @@
   "description": "Use a modern way to check if a constructor is a sub-constructor (derived class) of another.",
   "devDependencies": {
     "@produck/is-constructor": "^2.0.0",
-    "@produck/type-error": "^0.1.0"
+    "@produck/type-error": "^0.2.0"
   },
   "exports": {
     ".": {
@@ -35,7 +35,7 @@
   "name": "@produck/is-sub-constructor",
   "peerDependencies": {
     "@produck/is-constructor": "^2.0.0",
-    "@produck/type-error": "^0.1.0"
+    "@produck/type-error": "^0.2.0"
   },
   "publishConfig": {
     "access": "public"
